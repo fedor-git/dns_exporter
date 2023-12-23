@@ -14,16 +14,16 @@ import (
 var (
 	dnsTimeMetric = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "cvpn_dns_resolution_time",
-			Help: "Time of resolution",
+			Name: "dns_lookup_time",
+			Help: "DNS lookup time measurement",
 		},
 		[]string{"dns_server", "hostname"},
 	)
 
 	dnsUpMetric = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "cvpn_dns_up",
-			Help: "Up state for DNS servers",
+			Name: "dns_availability",
+			Help: "DNS Server Status",
 		},
 		[]string{"dns_server"},
 	)
@@ -80,18 +80,16 @@ func dnsTestThread(conf *config.Config) {
 				}
 			}
 		}
-		if conf.Configuration.Write {
-
-			for dnsServer, status := range serverStatus {
-				if status {
-					tempUp = append(tempUp, fmt.Sprintf(`dns_availability{dns_server="%s"} 1.0`, dnsServer))
-					dnsUpMetric.WithLabelValues(dnsServer).Set(1)
-				} else {
-					tempUp = append(tempUp, fmt.Sprintf(`dns_availability{dns_server="%s"} 0.0`, dnsServer))
-					dnsUpMetric.WithLabelValues(dnsServer).Set(0)
-				}
+		for dnsServer, status := range serverStatus {
+			if status {
+				tempUp = append(tempUp, fmt.Sprintf(`dns_availability{dns_server="%s"} 1.0`, dnsServer))
+				dnsUpMetric.WithLabelValues(dnsServer).Set(1)
+			} else {
+				tempUp = append(tempUp, fmt.Sprintf(`dns_availability{dns_server="%s"} 0.0`, dnsServer))
+				dnsUpMetric.WithLabelValues(dnsServer).Set(0)
 			}
-
+		}
+		if conf.Configuration.Write {
 			fileResolvTime := conf.Configuration.Path + "/" + conf.Configuration.TimeFile
 			fileDnsUpPath := conf.Configuration.Path + "/" + conf.Configuration.UPFile
 
