@@ -1,0 +1,19 @@
+servers:
+ - 1.1.1.1
+ - 8.8.8.8
+ - 9.9.9.9
+ - 192.168.11.254
+ - 192.168.1.1
+
+hosts:
+ - google.com
+ - facebook.com
+ - microsoft.com
+ - fwefwf.hh
+
+configuration:
+  writetofiles: False
+  path: /tmp/exports
+  timefile: lookuptime.prom
+  upfile: availability.prom
+  interval: 30
