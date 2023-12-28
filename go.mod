@@ -4,7 +4,7 @@ go 1.21.1
 
 require (
 	github.com/miekg/dns v1.1.57
-	github.com/prometheus/client_golang v1.17.0
+	github.com/prometheus/client_golang v1.18.0
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 	gopkg.in/yaml.v2 v2.4.0
 )
