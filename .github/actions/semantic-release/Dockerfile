@@ -11,6 +11,7 @@ RUN npm install -g semantic-release@17.4.7 \
   conventional-changelog-conventionalcommits@4.6.1
 
 WORKDIR /app
+COPY package.json /app/package.json
 
 ENTRYPOINT ["/usr/local/bin/npx"]
 CMD ["semantic-release", "--no-ci"]
