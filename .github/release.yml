@@ -1,8 +1,10 @@
 name: Release dns_exporter
+
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   release:
