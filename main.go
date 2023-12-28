@@ -33,8 +33,7 @@ func printVersion() {
 
 func loadConfig() (*config.Config, error) {
 	if *configFile == "" {
-		cfg := config.Config{}
-		return &cfg, nil
+		return nil, fmt.Errorf("config file path is empty")
 	}
 
 	f, err := os.Open(*configFile)
