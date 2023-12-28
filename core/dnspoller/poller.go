@@ -6,6 +6,8 @@ import (
 	"strings"
 	"time"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/fedor-git/dns_exporter/core/config"
 	"github.com/miekg/dns"
 	"github.com/prometheus/client_golang/prometheus"
@@ -71,10 +73,12 @@ func dnsTestThread(conf *config.Config) {
 
 				if ck == 0.0 {
 					tempResolv = append(tempResolv, fmt.Sprintf(`dns_lookup_time{dns_server="%s", hostname="%s"} 0.0`, t, d))
+					log.Debugf(`Lookup Time [%s]: %s = none`, t, d)
 					dnsTimeMetric.WithLabelValues(t, d).Set(0)
 					serverStatus[t] = false
 				} else {
 					tempResolv = append(tempResolv, fmt.Sprintf(`dns_lookup_time{dns_server="%s", hostname="%s"} %.4f`, t, d, ck))
+					log.Debugf(`Lookup Time [%s]: %s = %.4f`, t, d, ck)
 					dnsTimeMetric.WithLabelValues(t, d).Set(ck)
 					serverStatus[t] = true
 				}
@@ -83,9 +87,11 @@ func dnsTestThread(conf *config.Config) {
 		for dnsServer, status := range serverStatus {
 			if status {
 				tempUp = append(tempUp, fmt.Sprintf(`dns_availability{dns_server="%s"} 1.0`, dnsServer))
+				log.Debugf(`DNS Availability [%s]: true`, dnsServer)
 				dnsUpMetric.WithLabelValues(dnsServer).Set(1)
 			} else {
 				tempUp = append(tempUp, fmt.Sprintf(`dns_availability{dns_server="%s"} 0.0`, dnsServer))
+				log.Debugf(`DNS Availability [%s]: false`, dnsServer)
 				dnsUpMetric.WithLabelValues(dnsServer).Set(0)
 			}
 		}
@@ -95,15 +101,18 @@ func dnsTestThread(conf *config.Config) {
 
 			err := writeToFile(fileResolvTime, tempResolv)
 			if err != nil {
-				fmt.Println("Error writing to file:", err)
+				log.Errorln("Error writing to file:", err)
 			}
 
 			tempUp = uniqueStrings(tempUp)
 			err = writeToFile(fileDnsUpPath, tempUp)
 			if err != nil {
-				fmt.Println("Error writing to file:", err)
+				log.Errorln("Error writing to file:", err)
 			}
 		}
+		log.Debug("Job finished!")
+
+		log.Debugf("Waiting new job: %s", time.Duration(conf.Configuration.Interval) * time.Second)
 		time.Sleep(time.Duration(conf.Configuration.Interval) * time.Second)
 	}
 }
