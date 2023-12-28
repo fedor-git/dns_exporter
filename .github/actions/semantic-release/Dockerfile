@@ -13,4 +13,4 @@ RUN npm install -g semantic-release@17.4.7 \
 WORKDIR /app
 
 ENTRYPOINT ["/usr/local/bin/npx"]
-CMD ["semantic-release", "--no-ci", "--branches", "main"]
+CMD ["semantic-release", "--branches", "main", "--no-ci"]
