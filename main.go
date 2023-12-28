@@ -13,7 +13,7 @@ import (
 
 const (
 	internalPort        = 9433
-	version      string = "0.0.1"
+	version      string = "1.0.0"
 )
 
 var (
