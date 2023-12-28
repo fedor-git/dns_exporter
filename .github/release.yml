@@ -1,0 +1,22 @@
+name: Release dns_exporter
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+      - name: 🚀 Create Release
+        uses: ./.github/actions/semantic-release/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
