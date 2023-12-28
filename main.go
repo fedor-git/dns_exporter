@@ -7,6 +7,7 @@ import (
 	"github.com/fedor-git/dns_exporter/core/config"
 	"github.com/fedor-git/dns_exporter/core/dnspoller"
 	"github.com/fedor-git/dns_exporter/core/webapp"
+	log "github.com/sirupsen/logrus"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
@@ -20,6 +21,7 @@ var (
 	listenAddress = kingpin.Flag("web.listen-address", "Address on which to expose metrics and web interface").Default("").String()
 	metricsPath   = kingpin.Flag("web.telemetry-path", "Path under which to expose metrics").Default("/metrics").String()
 	configFile    = kingpin.Flag("config.path", "Path to config file").Default("").String()
+	logLevel      = kingpin.Flag("log.level", "Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]").Default("info").String()
 )
 
 func printVersion() {
@@ -47,6 +49,9 @@ func loadConfig() (*config.Config, error) {
 
 func main() {
 	kingpin.Parse()
+
+	setLogLevel(*logLevel)
+	log.SetReportCaller(true)
 
 	if *showVersion {
 		printVersion()
