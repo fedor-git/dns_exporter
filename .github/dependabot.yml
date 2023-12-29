@@ -5,10 +5,10 @@ updates:
     schedule:
       interval: daily
   - package-ecosystem: docker
-    directory: /
+    directory: /.github/actions/semantic-release
     schedule:
       interval: daily
   - package-ecosystem: npm
-    directory: /
+    directory: /.github/actions/semantic-release
     schedule:
       interval: daily

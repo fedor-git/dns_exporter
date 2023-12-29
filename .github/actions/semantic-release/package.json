@@ -1,9 +1,0 @@
-{
-    "release": {
-        "branches": [
-          { "name": "1.0.x", "channel": "1.0.x", "prerelease": "1.0.x" },
-          { "name": "1.1.x", "channel": "1.1.x", "prerelease": "1.1.x" },
-          { "name": "main" }
-        ]
-      }
-}
