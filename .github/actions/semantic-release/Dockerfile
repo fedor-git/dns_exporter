@@ -1,4 +1,4 @@
-FROM node:14.4.0
+FROM node:21.5.0
 
 RUN npm install -g semantic-release@17.4.7 \
   @semantic-release/commit-analyzer@8.0.1 \
