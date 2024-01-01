@@ -1,5 +1,7 @@
 FROM node:21.5.0
 
+RUN apt-get update && apt-get install -y git
+
 RUN npm install -g semantic-release@22.0.12 \
   @semantic-release/commit-analyzer@11.1.0 \
   @semantic-release/release-notes-generator@12.1.0 \
