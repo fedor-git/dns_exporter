@@ -5,6 +5,6 @@
       },
     "repository": {
         "type": "git",
-        "url": "https://github.com/fedor-git/dns_exporter.git"
+        "url": "git@github.com:fedor-git/dns_exporter"
     }
 }
