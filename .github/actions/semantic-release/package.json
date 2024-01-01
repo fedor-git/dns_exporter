@@ -2,5 +2,9 @@
     "name": "dns_exporter",
     "release": {
         "branches": ["main"]
-      }
+      },
+    "repository": {
+    "type": "git",
+    "url": "https://github.com/fedor-git/dns_exporter.git"
+    }
 }
