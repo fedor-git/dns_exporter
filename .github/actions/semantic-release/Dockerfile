@@ -17,4 +17,4 @@ COPY package.json /app
 WORKDIR /app
 
 ENTRYPOINT ["/usr/local/bin/npx"]
-CMD ["semantic-release", "--no-ci"]
+CMD ["semantic-release", "-r", "https://github.com/fedor-git/dns_exporter.git", "--no-ci"]
