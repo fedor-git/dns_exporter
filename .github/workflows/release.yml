@@ -4,23 +4,28 @@ on:
   push:
     branches:
       - main
+      - "*.x"
   workflow_dispatch:
+
+permissions:
+  contents: read # for checkout
 
 jobs:
   release:
-    runs-on: ubuntu-latest
     permissions:
       contents: write
       issues: write
       pull-requests: write
       id-token: write
+    name: release
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      - uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8
         with:
-          ref: main
-          fetch-depth: 0
-      - name: 🚀Create Release
-        uses: ./.github/actions/semantic-release/
+          cache: npm
+          node-version: lts/*
+      - run: npm ci
+      - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_URL: https://github.com/fedor-git/dns_exporter.git

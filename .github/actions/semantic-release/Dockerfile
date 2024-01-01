@@ -15,7 +15,6 @@ RUN npm install -g semantic-release@22.0.12 \
 RUN mkdir /app
 
 COPY package.json /app
-COPY . /app
 
 WORKDIR /app
 
