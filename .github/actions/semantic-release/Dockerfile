@@ -10,6 +10,8 @@ RUN npm install -g semantic-release@22.0.12 \
   @saithodev/semantic-release-backmerge@4.0.1 \
   conventional-changelog-conventionalcommits@7.0.2
 
+RUN mkdir /app
+
 COPY package.json /app
 
 WORKDIR /app
