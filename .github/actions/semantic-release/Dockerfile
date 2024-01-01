@@ -1,14 +1,14 @@
 FROM node:21.5.0
 
-RUN npm install -g semantic-release@17.4.7 \
-  @semantic-release/commit-analyzer@8.0.1 \
-  @semantic-release/release-notes-generator@9.0.3 \
-  @semantic-release/npm@7.1.3 \
-  @semantic-release/changelog@5.0.1 \
-  @semantic-release/git@9.0.1 \
-  @semantic-release/exec \
-  @saithodev/semantic-release-backmerge@1.5.3 \
-  conventional-changelog-conventionalcommits@4.6.1
+RUN npm install -g semantic-release@22.0.12 \
+  @semantic-release/commit-analyzer@11.1.0 \
+  @semantic-release/release-notes-generator@12.1.0 \
+  @semantic-release/npm@11.0.2 \
+  @semantic-release/changelog@6.0.3 \
+  @semantic-release/git@10.0.1 \
+  @semantic-release/exec@6.0.3 \
+  @saithodev/semantic-release-backmerge@4.0.1 \
+  conventional-changelog-conventionalcommits@7.0.2
 
 RUN mkdir /app
 
