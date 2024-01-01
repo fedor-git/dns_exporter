@@ -13,8 +13,9 @@ RUN npm install -g semantic-release@22.0.12 \
 RUN mkdir /app
 
 COPY package.json /app
+COPY . /app
 
 WORKDIR /app
 
 ENTRYPOINT ["/usr/local/bin/npx"]
-CMD ["semantic-release", "--branches", "main", "--no-ci"]
+CMD ["semantic-release", "--no-ci"]
