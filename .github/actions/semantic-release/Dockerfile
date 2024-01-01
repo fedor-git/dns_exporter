@@ -10,11 +10,11 @@ RUN npm install -g semantic-release@22.0.12 \
   @saithodev/semantic-release-backmerge@4.0.1 \
   conventional-changelog-conventionalcommits@7.0.2
 
-RUN mkdir /app
+RUN mkdir /github/workspace
 
-COPY package.json /app
+COPY package.json /github/workspace
 
-WORKDIR /app
+WORKDIR /github/workspace
 
 ENTRYPOINT ["/usr/local/bin/npx"]
-CMD ["semantic-release", "-r", "https://github.com/fedor-git/dns_exporter.git", "--no-ci"]
+CMD ["semantic-release", "--no-ci"]
