@@ -10,6 +10,10 @@ RUN npm install -g semantic-release@17.4.7 \
   @saithodev/semantic-release-backmerge@1.5.3 \
   conventional-changelog-conventionalcommits@4.6.1
 
+RUN mkdir /app
+
+COPY package.json /app
+
 WORKDIR /app
 
 ENTRYPOINT ["/usr/local/bin/npx"]

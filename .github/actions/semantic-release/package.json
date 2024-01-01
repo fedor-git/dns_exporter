@@ -1,0 +1,6 @@
+{
+    "name": "dns_exporter",
+    "release": {
+        "branches": ["main"]
+      }
+}
