@@ -1,7 +1,9 @@
 name: 🚀 Release dns_exporter
 
 on:
-  workflow_dispatch:
+  push:
+    tags:
+      - '*.*.*'
 
 permissions:
   contents: read # for checkout
@@ -13,12 +15,17 @@ jobs:
       issues: write
       pull-requests: write
     runs-on: ubuntu-latest
+    name: Create Release
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Go
+        uses: actions/setup-go@v3
         with:
-          node-version: 20.6.1
-      - run: npm ci
-      - run: npx semantic-release
+          go-version: "1.21"
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v4
+        with:
+          args: release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

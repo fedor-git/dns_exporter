@@ -1,5 +1,0 @@
-name: 'Semantic release'
-description: 'Semantic release uses package.json configuration'
-runs:
-  using: 'docker'
-  image: 'Dockerfile'
