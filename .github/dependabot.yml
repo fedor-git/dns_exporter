@@ -4,11 +4,3 @@ updates:
     directory: /
     schedule:
       interval: daily
-  - package-ecosystem: docker
-    directory: /.github/actions/semantic-release
-    schedule:
-      interval: daily
-  - package-ecosystem: npm
-    directory: /.github/actions/semantic-release
-    schedule:
-      interval: daily
