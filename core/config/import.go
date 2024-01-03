@@ -8,7 +8,8 @@ import (
 )
 
 type Config struct {
-	Servers       []string `yaml:"servers"`
+	Servers       []TargetConfig `yaml:"servers"`
+
 	Hosts         []string `yaml:"hosts"`
 	Configuration struct {
 		Path     string `yaml:"path"`
@@ -28,4 +29,14 @@ func FromYAML(r io.Reader) (*Config, error) {
 	}
 
 	return c, nil
+}
+
+func (cfg *Config) TargetConfigByAddr(addr string) TargetConfig {
+	for _, t := range cfg.Servers {
+		if t.Addr == addr {
+			return t
+		}
+	}
+
+	return TargetConfig{Addr: addr}
 }

@@ -24,7 +24,9 @@ dns_lookup_time{dns_server="1.1.1.1",hostname="microsoft.com"} 0.146392791
 # Configuration file
 ```yaml
 servers:
- - 1.1.1.1
+ - 1.1.1.1:
+    foo: bar
+ - 8.8.8.8
 
 hosts:
  - google.com
