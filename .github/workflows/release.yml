@@ -3,7 +3,7 @@ name: 🚀 Release dns_exporter
 on:
   push:
     tags:
-      - '*.*.*'
+      - 'v*.*.*'
 
 permissions:
   contents: read # for checkout
