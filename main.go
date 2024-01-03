@@ -13,7 +13,7 @@ import (
 
 const (
 	internalPort        = 9433
-	version      string = "1.0.0"
+	version      string = "1.0.1"
 )
 
 var (
@@ -62,7 +62,7 @@ func main() {
 		kingpin.FatalUsage("could not load config.path: %v", err)
 	}
 
-	dnspoller.InitMetrics()
+	dnspoller.InitMetrics(cfg)
 	dnspoller.StartDNSThread(cfg)
 
 	webapp.StartServer(*listenAddress, internalPort, *metricsPath)
