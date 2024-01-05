@@ -12,11 +12,11 @@ type Config struct {
 
 	Hosts         []string `yaml:"hosts"`
 	Configuration struct {
-		Path     string `yaml:"path"`
-		TimeFile string `yaml:"timefile"`
-		UPFile   string `yaml:"upfile"`
-		Interval int    `yaml:"interval"`
-		Write    bool   `yaml:"writetofiles"`
+		Path       string `yaml:"path"`
+		MetricFile string `yaml:"filename"`
+		Interval   int    `yaml:"interval"`
+		Write      bool   `yaml:"externalcollector"`
+		DNSTimeout int    `yaml:"timeout"`
 	} `yaml:"configuration"`
 }
 

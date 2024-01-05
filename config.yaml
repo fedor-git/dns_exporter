@@ -13,8 +13,8 @@ hosts:
  - fwefwf.hh
 
 configuration:
-  writetofiles: False
+  externalcollector: True
   path: /tmp/exports
-  timefile: lookuptime.prom
-  upfile: availability.prom
+  filename: exmetrics.prom
   interval: 30
+  timeout: 3

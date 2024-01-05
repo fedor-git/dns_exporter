@@ -35,16 +35,17 @@ hosts:
  - fwefwf.hh
 
 configuration:
-  writetofiles: False
+  externalcollector: False
   path: /tmp/exports
-  timefile: lookuptime.prom
-  upfile: availability.prom
+  filename: exmetrics.prom
   interval: 30
+  timeout: 3
 ```
  * `servers` - set servers which you need to check 
  * `hosts` - hosts to check
  * `configuration`
-    * `writetofiles` - if you need use own exporter for example NodeExporter
+    * `externalcollector` - if you need use own exporter for example NodeExporter
     * `path` - path to write metrics
-    * `timefile`,`upfile` - files for write metrics
-    * `interval` - time in seconds after which servers are polled 
+    * `filename` - file in prom format for use in NodeExporter
+    * `interval` - time in seconds after which servers are polled
+    * `timeout` - timeout for DNS resolve

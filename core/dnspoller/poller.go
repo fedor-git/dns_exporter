@@ -12,6 +12,11 @@ import (
 
 var Collector *DNSPollerCollector
 
+type DNSResolutionResult struct {
+	Duration float64
+	Err      error
+}
+
 func InitMetrics(conf *config.Config) {
 	Collector = NewDNSPollerCollector(conf.Servers)
 	prometheus.MustRegister(Collector)
@@ -21,20 +26,19 @@ func StartDNSThread(conf *config.Config) {
 	go dnsTestThread(conf)
 }
 
-func checkDNSResolution(domain, dnsServer string, timeout time.Duration) float64 {
-	resolver := dns.Client{Timeout: timeout}
-	msg := new(dns.Msg)
-	msg.SetQuestion(domain+".", dns.TypeA)
+func checkDNSResolution(domain, dnsServer string, timeout time.Duration) DNSResolutionResult {
+    resolver := dns.Client{Timeout: timeout}
+    msg := new(dns.Msg)
+    msg.SetQuestion(domain+".", dns.TypeA)
 
-	startTime := time.Now()
-	_, _, err := resolver.Exchange(msg, dnsServer+":53")
-	endTime := time.Now()
+    startTime := time.Now()
+    _, _, err := resolver.Exchange(msg, dnsServer+":53")
+    endTime := time.Now()
 
-	if err != nil {
-		return 0.0
-	}
-
-	return endTime.Sub(startTime).Seconds()
+    return DNSResolutionResult{
+        Duration: endTime.Sub(startTime).Seconds(),
+        Err:      err,
+    }
 }
 
 func dnsTestThread(conf *config.Config) {
@@ -50,14 +54,14 @@ func dnsTestThread(conf *config.Config) {
 			serverChecks[t.Addr] = &CheckResult{TotalCount: len(conf.Hosts)}
 
 			for _, d := range conf.Hosts {
-				ck := checkDNSResolution(d, t.Addr, 1*time.Second)
-				if ck == 0.0 {
-					log.Debugf(`Lookup Time [%s]: %s = none`, t.Addr, d)
+				ck := checkDNSResolution(d, t.Addr, time.Duration(conf.Configuration.DNSTimeout) * time.Second)
+				if ck.Err != nil {
+					log.Debugf(`Lookup Time [%s]: %s: %s`, t.Addr, d, ck.Err)
 					Collector.UpdateMetric("dns_lookup_time", t.Addr, d, 0.0)
 				} else {
 					serverChecks[t.Addr].SuccessCount++
-					log.Debugf(`Lookup Time [%s]: %s = %.4f`, t.Addr, d, ck)
-					Collector.UpdateMetric("dns_lookup_time", t.Addr, d, ck)
+					log.Debugf(`Lookup Time [%s]: %s = %.4f`, t.Addr, d, ck.Duration)
+					Collector.UpdateMetric("dns_lookup_time", t.Addr, d, ck.Duration)
 				}
 			}
 		}
@@ -74,15 +78,11 @@ func dnsTestThread(conf *config.Config) {
 
 		if conf.Configuration.Write {
 			log.Debug("Write to Files is Enabled!")
-			fileResolvTime := conf.Configuration.Path + "/" + conf.Configuration.TimeFile
-			fileDnsUpPath := conf.Configuration.Path + "/" + conf.Configuration.UPFile
-
-			if err := gatherAndWriteMetrics([]string{"dns_availability"}, fileDnsUpPath); err != nil {
+			single_file := conf.Configuration.Path + "/" + conf.Configuration.MetricFile
+			interestedMetrics := []string{"dns_availability", "dns_lookup_time"}
+			
+			if err := gatherSpecificMetrics(interestedMetrics, single_file); err != nil {
 				log.Error("Error writing availability metrics:", err)
-			}
-
-			if err := gatherAndWriteMetrics([]string{"dns_lookup_time"}, fileResolvTime); err != nil {
-				log.Error("Error writing lookup time metrics:", err)
 			}
 		}
 
