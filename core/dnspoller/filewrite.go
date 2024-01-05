@@ -8,7 +8,7 @@ import (
 	"github.com/prometheus/common/expfmt"
 )
 
-func gatherAndWriteMetrics(metricsNames []string, filename string) error {
+func gatherSpecificMetrics(metricsNames []string, filename string) error {
 	registry := prometheus.DefaultGatherer
 	metricFamilies, err := registry.Gather()
 	if err != nil {
